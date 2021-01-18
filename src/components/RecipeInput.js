@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {
 	Flex,
 	Box,
@@ -38,7 +39,22 @@ const RecipeField = () => {
 			steps: Yup.string(),
 		}),
 		onSubmit: values => {
-			console.log(values)
+			const {
+				title,
+				author,
+				ingredients,
+				portionSize,
+				steps
+			} = values;
+
+			axios.post('http://localhost:5000/recipes', {
+				title: title,
+				author: author,
+				ingredients: ingredients,
+				portion_size: portionSize,
+				steps: steps
+			})
+			.then(res => console.log(res))
 		},
 	});
 

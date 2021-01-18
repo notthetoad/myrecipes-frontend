@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import {
 	Box,
 	Center,
-	// FormControl,
 	FormLabel,
 	Button,
 	Input,
@@ -14,36 +14,41 @@ import {
 
 const LoginPage = () => {
 
-	const [isLoggedIn, setIsLoggedIn] = useState(true); // Change to false after testing
+	const [isLoggedIn, setIsLoggedIn] = useState(false); // Change to false after testing
 	const [isLoginClicked, setIsLoginClicked] = useState(true);
 
+	// const validate = values => {
+	// 	const errors = {};
 
-	const validate = values => {
-		const errors = {};
+	// 	if (!values.login) {
+	// 		errors.login = 'Required';
+	// 	} else if (values.login !== localStorage.getItem('login')) {
+	// 		errors.login = 'Invalid login';
+	// 	}
 
-		if (!values.login) {
-			errors.login = 'Required';
-		} else if (values.login !== localStorage.getItem('login')) {
-			errors.login = 'Invalid login';
-		}
+	// 	if (!values.password) {
+	// 		errors.password = 'Required';
+	// 	} else if (values.password !== localStorage.getItem('password')) {
+	// 		errors.password = 'Invalid password';
+	// 	}
 
-		if (!values.password) {
-			errors.password = 'Required';
-		} else if (values.password !== localStorage.getItem('password')) {
-			errors.password = 'Invalid password';
-		}
-
-		return errors;
-	}
+	// 	return errors;
+	// }
 
 	const formik = useFormik({
 		initialValues : {
 			login: '',
 			password: ''
 		},
-		validate,
+		// validate,
 		onSubmit: values => {
-			console.log(values, null, 2)
+			// console.log(values, null, 2)
+			const { login, password } = values;
+			axios.post('http://localhost:5000/login', {
+				login: login,
+				password: password
+			})
+			.then(res => console.log(res))
 		},
 	});
 

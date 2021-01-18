@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
+import axios from 'axios';
 import {
 	Box,
 	Center,
@@ -33,6 +34,7 @@ const RegisterPage = () => {
 
 		const [login, setLogin] = useState('');
 		const [password, setPassword] = useState('');
+		const [registerMessage, setRegisterMessage] = useState('');
 
 	useEffect(() => {
 		localStorage.getItem('login', 'password')
@@ -54,7 +56,15 @@ const RegisterPage = () => {
 		},
 		validate,
 		onSubmit: values => {
-			console.log(JSON.stringify(values, null, 2));
+			// console.log(JSON.stringify(values, null, 2));
+			const { login, password } = values;
+
+			// KINDA WORKS
+			axios.post('http://localhost:5000/register', {
+				login: login,
+				password: password
+			})
+			.then(res => setRegisterMessage(res.data.message))			
 		},
 	});
 	return ( // remake signup so it doesnt look too different to login
@@ -96,6 +106,7 @@ const RegisterPage = () => {
 				</FormControl>
 				<Button colorScheme='teal' variant='outline' onClick={setLocalStorage} type='submit' mt='2'>Register</Button>
 				<Button colorScheme='tea' variant='ghost' onClick={clearLocalStorage} mt='2'>Clear data</Button>
+				{registerMessage ? <Box>{registerMessage}</Box> : null}
 			</form>
 			</Box>
 		</Center>
