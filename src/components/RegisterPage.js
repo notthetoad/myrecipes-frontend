@@ -1,82 +1,43 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import {
-	Box,
 	Center,
 	FormControl,
 	FormLabel,
 	FormHelperText,
 	Button,
 	Input,
-	Checkbox,
 } from '@chakra-ui/react';
-
-const validate = values => {
-	const errors = {};
-	if (!values.login) {
-		errors.login = 'Required';
-	} else if (values.login.length < 3) {
-		errors.login = 'Login must be longer than 3 characters';
-	};
-
-	if (!values.password) {
-		errors.password = 'Required';
-	} else if (values.password.length < 3) {
-		errors.password = 'Password must be 3 characters or more';
-	};
-
-	return errors;
-}
 
 const RegisterPage = () => {
 
-		const [login, setLogin] = useState('');
-		const [password, setPassword] = useState('');
-		const [registerMessage, setRegisterMessage] = useState('');
-
-	useEffect(() => {
-		localStorage.getItem('login', 'password')
-	}, [login, password])
-
-	const setLocalStorage = () => {
-		localStorage.setItem('login', formik.values.login)
-		localStorage.setItem('password', formik.values.password)
-	}
-
-	const clearLocalStorage = () => {
-		localStorage.clear();
-	}
+	const [registerMessage, setRegisterMessage] = useState('');
 
 	const formik = useFormik({
 		initialValues: {
 			login: '',
 			password: ''
 		},
-		validate,
 		onSubmit: values => {
-			// console.log(JSON.stringify(values, null, 2));
 			const { login, password } = values;
 
-			// KINDA WORKS
 			axios.post('http://localhost:5000/register', {
 				login: login,
 				password: password
 			})
-			.then(res => setRegisterMessage(res.data.message))			
+			.then(res => setRegisterMessage(res.data.message))
 		},
 	});
-	return ( // remake signup so it doesnt look too different to login
+	return (
 		<Center mt='10%'>
-			<Box>
 			<form onSubmit={formik.handleSubmit}>
 				<FormControl id='login' isRequired>
 					<FormLabel htmlFor='login'>Login</FormLabel>
-					{formik.touched.login && formik.errors.login ? <Box style={{color: 'red'}}>{formik.errors.login}</Box> : null}
+					{/* {formik.touched.login && formik.errors.login ? <Box style={{color: 'red'}}>{formik.errors.login}</Box> : null} */}
 					<Input 
 						type='login' 
-						size='sm' 
 						id='login'
 						name='login'
 						onChange={formik.handleChange}
@@ -87,10 +48,9 @@ const RegisterPage = () => {
 				</FormControl>
 				<FormControl id='password' isRequired>
 					<FormLabel htmlFor='password'>Password</FormLabel>
-					{formik.touched.password && formik.errors.password ? <Box style={{color: 'red'}}>{formik.errors.password}</Box> : null}
+					{/* {formik.touched.password && formik.errors.password ? <Box style={{color: 'red'}}>{formik.errors.password}</Box> : null} */}
 					<Input 
 						type='password'
-						size='sm' 
 						id='password'
 						name='password'
 						onChange={formik.handleChange}
@@ -98,17 +58,16 @@ const RegisterPage = () => {
 						value={formik.values.password}	
 						/>
 					<FormHelperText mb='2'>Remember to never share your password with anybody</FormHelperText>
-					<Checkbox 
-						isDisabled={!formik.errors.login && !formik.errors.password && formik.values.login && formik.values.password ? false : true}
-						>
-						Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.
-					</Checkbox>
 				</FormControl>
-				<Button colorScheme='teal' variant='outline' onClick={setLocalStorage} type='submit' mt='2'>Register</Button>
-				<Button colorScheme='tea' variant='ghost' onClick={clearLocalStorage} mt='2'>Clear data</Button>
-				{registerMessage ? <Box>{registerMessage}</Box> : null}
+				<Button 
+					colorScheme='teal' 
+					variant='outline'
+					type='submit' 
+					mt='2'
+					type='submit'
+					>Register</Button>
+				{/* Get message from server res */}
 			</form>
-			</Box>
 		</Center>
 	)
 }

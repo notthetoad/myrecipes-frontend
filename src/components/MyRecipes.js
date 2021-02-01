@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Box,
 	StackDivider,
@@ -10,24 +10,27 @@ import {
 import MainContainer from './MainContainer';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
+import axios from 'axios';
 
-// Finish styling Stack component
 const Stack = (props) => (
 	<VStack w='70%'>
 		<StackDivider>
-			<Recipe {...props}/>
+			<Recipe {...props} />
 		</StackDivider>
 	</VStack>
 )
 
 // Add button functionality
 const Recipe = (props) => {
+
+	// console.log(props)
+	// somehow get recipe_id which is not in props to DeleteButton
 	return (
-		<Flex p={5} shadow='md' borderWidth='1px' mb='3' props={props} direction='column'>
-		<Flex align='center'>
-			<Heading fontSize='1.5em'>{props.title}</Heading>
-			<EditButton />
-			<DeleteButton />
+		<Flex p={5} shadow='md' borderWidth='1px' mb='3' direction='column'>
+			<Flex align='center'>
+				<Heading fontSize='1.5em'>{props.title}</Heading>
+				<EditButton />
+				<DeleteButton props={props} /> 
 			</Flex>
 			<Flex>
 				<Text mt={4}>By: {props.author}</Text>
@@ -43,12 +46,25 @@ const Recipe = (props) => {
 
 const MyRecipes = () => {
 
-	let myLs = localStorage.getItem('recipe');
-	let ls = JSON.parse(myLs)
+	const [recipes, setRecipes] = useState([]);
+
+	useEffect(() => {
+		axios.get('http://localhost:5000/getrecipes', {
+			headers: {
+				'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+			}
+		})
+		.then(res => {
+			// console.log(res)
+			setRecipes(res.data.recipes)
+		})
+	}, [recipes])
+
+	// server requests all the time when trying to do componentDidUpdate with useEffect
 
 	return (
 		<>
-			<MainContainer children={ls.map(recipe => <Stack title={recipe.title} author={recipe.author} ingredients={recipe.ingredients} portionSize={recipe.portionSize} steps={recipe.steps}/>)}/>
+			<MainContainer children={recipes.map(recipe => <Stack key={recipe.recipe_id} recipe_id={recipe.recipe_id} title={recipe.title} author={recipe.author} ingredients={recipe.ingredients} portionSize={recipe.portion_size} steps={recipe.steps}/>)}/>
 		</>
 	)
 }

@@ -1,99 +1,72 @@
-import React from 'react';
-import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import {
-	Box,
 	Center,
 	FormLabel,
 	Button,
 	Input,
 } from '@chakra-ui/react';
-
+import { Redirect } from 'react-router-dom';
 
 const LoginPage = () => {
 
-	const [isLoggedIn, setIsLoggedIn] = useState(false); // Change to false after testing
-	const [isLoginClicked, setIsLoginClicked] = useState(true);
-
-	// const validate = values => {
-	// 	const errors = {};
-
-	// 	if (!values.login) {
-	// 		errors.login = 'Required';
-	// 	} else if (values.login !== localStorage.getItem('login')) {
-	// 		errors.login = 'Invalid login';
-	// 	}
-
-	// 	if (!values.password) {
-	// 		errors.password = 'Required';
-	// 	} else if (values.password !== localStorage.getItem('password')) {
-	// 		errors.password = 'Invalid password';
-	// 	}
-
-	// 	return errors;
-	// }
+	const [serverCode, setServerCode] = useState();
 
 	const formik = useFormik({
 		initialValues : {
 			login: '',
 			password: ''
 		},
-		// validate,
 		onSubmit: values => {
-			// console.log(values, null, 2)
 			const { login, password } = values;
+
 			axios.post('http://localhost:5000/login', {
 				login: login,
 				password: password
 			})
-			.then(res => console.log(res))
-		},
-	});
+			.then(res => {
+				console.log(res)
+				setServerCode(res.status);
+				localStorage.setItem('jwt', res.data.jwt)
+			}) 
+			.catch(err => console.log(err.message))
+		}
+	})
 
-	if (isLoggedIn) {
-		return (
-			<Redirect to='/main' /> // Make protected routes for users
-		)
+	if (serverCode === 200) {
+		return <Redirect to='/main' />
 	} else {
 		return (
 			<Center mt='10%'>
-				<Box>
-					<form onSubmit={formik.handleSubmit}>
-						<FormLabel htmlFor='login'>Login</FormLabel>
-						{/* {formik.touched.login && formik.errors.login ? <Box>{formik.errors.login}</Box> : null} */}
-						<Input
-							id='login'
-							name='login'
-							type='text'
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.login}
-							mb='2'
-						/>
-						<FormLabel htmlFor='password'>Password</FormLabel>
-						{/* {formik.touched.password && formik.errors.password ? <Box>{formik.errors.password}</Box> : null} */}
-						<Input 
-							id='password'
-							name='password'
-							type='password'
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.password}
-						/>
-							<Button 
-								colorScheme='teal' 
-								variant='ghost' 
-								onClick={() => formik.values.login === localStorage.getItem('login') && formik.values.password === localStorage.getItem('password') ? setIsLoggedIn(true) : setIsLoginClicked(false)}
-								mt='1'
-								mb='2'
-							>
-								Login
-							</Button>
-						{!isLoginClicked ? <Box style={{color: 'red'}}>Invalid login or password</Box> : null}
-					</form>
-				</Box>
+				<form onSubmit={formik.handleSubmit}>
+					<FormLabel htmlFor='login'>Login</FormLabel>
+					<Input 
+						id='login'
+						name='login'
+						type='text'
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						value={formik.values.login}
+						mb='2'
+					/>
+					<FormLabel htmlFor='password'>Password</FormLabel>
+					<Input 
+						id='password'
+						name='password'
+						type='password'
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						value={formik.values.password}
+					/>
+					<Button
+						colorScheme='teal'
+						variant='outline'
+						mt='2'
+						mb='2'
+						type='submit'
+					>Log in</Button>
+				</form>
 			</Center>
 		)
 	}

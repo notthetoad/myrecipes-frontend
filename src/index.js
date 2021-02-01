@@ -11,7 +11,6 @@ import MainPage from './components/MainPage';
 
 const Routing = () => {
 
-
     return(
         <Router>
 					<Header />

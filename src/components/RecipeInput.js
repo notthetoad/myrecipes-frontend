@@ -18,7 +18,6 @@ import * as Yup from 'yup';
 
 const RecipeField = () => {
 
-	
 	const formik = useFormik({
 		initialValues: {
 			title: '',
@@ -47,27 +46,25 @@ const RecipeField = () => {
 				steps
 			} = values;
 
-			axios.post('http://localhost:5000/recipes', {
+			const data = {
 				title: title,
 				author: author,
 				ingredients: ingredients,
-				portion_size: portionSize,
+				portionSize: portionSize,
 				steps: steps
-			})
+			}
+
+			axios.post('http://localhost:5000/postrecipes', {
+				data 
+			}, { headers: {
+				'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+			}})
 			.then(res => console.log(res))
+			.catch(err => console.log(err))
 		},
 	});
 
 	const style = {color: 'red'}
-
-	const insertRecipe = (recipe) => {
-		let recipes = JSON.parse(localStorage.getItem('recipe'))
-		if (!recipes) {
-			recipes = []
-		}
-		recipes.push(recipe)
-		localStorage.setItem('recipe', JSON.stringify(recipes))
-	}
 
 	return (
 		<form onSubmit={formik.handleSubmit}>
@@ -119,7 +116,7 @@ const RecipeField = () => {
 						<Button
 							marginLeft='auto' 
 							mt='3'
-							onClick={() => insertRecipe(formik.values)}
+							onClick={formik.handleSubmit}
 						>
 						Add recipe
 						</Button>
