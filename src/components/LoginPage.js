@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { Redirect } from 'react-router-dom';
 
-const LoginPage = () => {
+const LoginPage = (props) => {
 
 	const [serverCode, setServerCode] = useState();
 
@@ -28,8 +28,10 @@ const LoginPage = () => {
 			.then(res => {
 				console.log(res)
 				setServerCode(res.status);
-				localStorage.setItem('jwt', res.data.jwt)
-			}) 
+				localStorage.setItem('jwt', res.data.jwt);
+				props.setJwt(res.data.jwt);
+				console.log(props.jwt)
+			})
 			.catch(err => console.log(err.message))
 		}
 	})
