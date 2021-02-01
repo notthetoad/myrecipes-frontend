@@ -23,8 +23,6 @@ const Stack = (props) => (
 // Add button functionality
 const Recipe = (props) => {
 
-	// console.log(props)
-	// somehow get recipe_id which is not in props to DeleteButton
 	return (
 		<Flex p={5} shadow='md' borderWidth='1px' mb='3' direction='column'>
 			<Flex align='center'>
