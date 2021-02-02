@@ -57,6 +57,8 @@ const MyRecipes = ({ state }) => {
 			setRecipes(res.data.recipes)
 		})
 
+		// try to make request with fetch to see if it works better than axios
+
 	// server requests all the time when trying to do componentDidUpdate with useEffect
 
 	if (state) {
