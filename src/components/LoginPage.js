@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import {
@@ -9,9 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { Redirect } from 'react-router-dom';
 
-const LoginPage = (props) => {
-
-	const [serverCode, setServerCode] = useState();
+const LoginPage = ({ jwt, setJwt }) => {
 
 	const formik = useFormik({
 		initialValues : {
@@ -27,16 +25,14 @@ const LoginPage = (props) => {
 			})
 			.then(res => {
 				console.log(res)
-				setServerCode(res.status);
 				localStorage.setItem('jwt', res.data.jwt);
-				props.setJwt(res.data.jwt);
-				console.log(props.jwt)
+				setJwt(localStorage.getItem('jwt'))
 			})
 			.catch(err => console.log(err.message))
 		}
 	})
 
-	if (serverCode === 200) {
+	if (jwt) {
 		return <Redirect to='/main' />
 	} else {
 		return (

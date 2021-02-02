@@ -9,7 +9,7 @@ import {
 	useColorMode
 } from '@chakra-ui/react';
 
-const Header = ({jwt, setJwt}) => {
+const Header = ({ jwt, setJwt }) => {
 
 	const { colorMode, toggleColorMode } = useColorMode();
 

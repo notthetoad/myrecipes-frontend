@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -13,10 +13,13 @@ const Routing = () => {
 
 	const [jwt, setJwt] = useState(localStorage.getItem('jwt'));
 
-	const props = {
-		jwt: jwt,
-		setJwt: setJwt
-	};
+	useEffect(() => {
+		console.log('jwt ' + jwt);
+		const props = {
+			jwt: jwt,
+			setJwt: setJwt
+	}; 
+	}, [])
 
     return(
         <Router>
@@ -24,9 +27,7 @@ const Routing = () => {
 						<Switch>
 							<Route exact path='/' component={App} />
 							<Route path='/main' component={MainPage} />
-							{/* <Route>
-								<MainPage props={props} />
-							</Route> */}
+							{/* <Route path='/main' render={() => <MainPage />} /> */}
 							<Route path='/signup' component={RegisterPage} />
 							{/* <Route path='/login' component={LoginPage} /> */}
 							<Router path='/login'>

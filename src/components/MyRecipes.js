@@ -53,10 +53,9 @@ const MyRecipes = () => {
 			}
 		})
 		.then(res => {
-			// console.log(res)
 			setRecipes(res.data.recipes)
 		})
-	}, [recipes])
+	}, [])
 
 	// server requests all the time when trying to do componentDidUpdate with useEffect
 

@@ -6,15 +6,15 @@ import {
 import SideContainer from './SideContainer';
 import RecipeInput from './RecipeInput';
 
-const MainPage = () => {
+const MainPage = ({ jwt }) => {
 
 	return (
-			<Grid templateColumns='repeat(10, 1fr)' gap={3} h='1000vh' mt='5%'>
-				<SideContainer />
-				<GridItem colStart={4} colEnd={11}>
-					<RecipeInput />
-				</GridItem>
-			</Grid>
+		<Grid templateColumns='repeat(10, 1fr)' gap={3} h='1000vh' mt='5%'>
+			<SideContainer />
+			<GridItem colStart={4} colEnd={11}>
+				<RecipeInput />
+			</GridItem>
+		</Grid>
 	)
 }
 
