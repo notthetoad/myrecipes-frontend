@@ -117,6 +117,7 @@ const RecipeField = () => {
 							marginLeft='auto' 
 							mt='3'
 							onClick={formik.handleSubmit}
+							type='submit'
 						>
 						Add recipe
 						</Button>
