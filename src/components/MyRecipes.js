@@ -47,7 +47,6 @@ const MyRecipes = ({ state }) => {
 
 	const [recipes, setRecipes] = useState([]);
 
-	useEffect(() => {
 		axios.get('http://localhost:5000/getrecipes', {
 			headers: {
 				'Authorization': `Bearer ${localStorage.getItem('jwt')}`
@@ -57,11 +56,10 @@ const MyRecipes = ({ state }) => {
 			// console.log(res)
 			setRecipes(res.data.recipes)
 		})
-	}, [recipes])
 
 	// server requests all the time when trying to do componentDidUpdate with useEffect
 
-	if (state === 'success') {
+	if (state) {
 		return (
 			<>
 				<MainContainer children={recipes.map(recipe => <Stack key={recipe.recipe_id} recipe_id={recipe.recipe_id} title={recipe.title} author={recipe.author} ingredients={recipe.ingredients} portionSize={recipe.portion_size} steps={recipe.steps}/>)}/>

@@ -29,7 +29,7 @@ const LoginPage = ({ setState }) => {
 				console.log(res)
 				setServerCode(res.status);
 				localStorage.setItem('jwt', res.data.jwt)
-				setState(res.data.message)
+				setState(res.data.jwt)
 			}) 
 			.catch(err => console.log(err.message))
 		}
