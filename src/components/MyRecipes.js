@@ -11,6 +11,7 @@ import MainContainer from './MainContainer';
 import DeleteButton from './DeleteButton';
 import EditButton from './EditButton';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 const Stack = (props) => (
 	<VStack w='70%'>
@@ -42,7 +43,7 @@ const Recipe = (props) => {
 	)
 }
 
-const MyRecipes = () => {
+const MyRecipes = ({ state }) => {
 
 	const [recipes, setRecipes] = useState([]);
 
@@ -60,11 +61,16 @@ const MyRecipes = () => {
 
 	// server requests all the time when trying to do componentDidUpdate with useEffect
 
-	return (
-		<>
-			<MainContainer children={recipes.map(recipe => <Stack key={recipe.recipe_id} recipe_id={recipe.recipe_id} title={recipe.title} author={recipe.author} ingredients={recipe.ingredients} portionSize={recipe.portion_size} steps={recipe.steps}/>)}/>
-		</>
-	)
+	if (state === true) {
+		return (
+			<>
+				<MainContainer children={recipes.map(recipe => <Stack key={recipe.recipe_id} recipe_id={recipe.recipe_id} title={recipe.title} author={recipe.author} ingredients={recipe.ingredients} portionSize={recipe.portion_size} steps={recipe.steps}/>)}/>
+			</>
+		)
+	} else {
+		// <Redirect to='/login' />
+		<h1>Hello</h1>
+	}
 }
 
 export default MyRecipes;

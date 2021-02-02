@@ -13,11 +13,6 @@ const Header = ({ state, setState }) => {
 
 	const { colorMode, toggleColorMode } = useColorMode();
 	
-	const jwt = localStorage.getItem('jwt');
-	// const [jwt, setJwt] = useState(localStorage.getItem('jwt'));
-
-	// do componentdidupdate with useEffect
-
 	if (state === 'success') {
 		return(
 			<Flex p='1' style={{backgroundColor: '#319795'}}>

@@ -24,7 +24,10 @@ const Routing = () => {
 							<Route to='/login'>
 								<LoginPage setState={setLoggedIn}/>
 							</Route>
-							<Route path='/myrecipes' component={MyRecipes} />
+							{/* <Route path='/myrecipes' component={MyRecipes} /> */}
+							<Route to='/myrecipes'>
+								<MyRecipes state={loggedIn} />
+							</Route>
 						</Switch>
         </Router>
 		)
