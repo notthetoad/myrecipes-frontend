@@ -4,7 +4,6 @@ import { MdClear } from 'react-icons/md';
 import axios from 'axios';
 
 const DeleteButton = (props) => {
-
 	const { recipe_id } = props.props;
 
 	const deleteRecipe = () => {

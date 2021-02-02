@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	Box,
 	StackDivider,
@@ -49,17 +49,13 @@ const MyRecipes = ({ state }) => {
 
 		axios.get('http://localhost:5000/getrecipes', {
 			headers: {
-				'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+				'Authorization': `Bearer ${state}`
 			}
 		})
 		.then(res => {
 			// console.log(res)
 			setRecipes(res.data.recipes)
 		})
-
-		// try to make request with fetch to see if it works better than axios
-
-	// server requests all the time when trying to do componentDidUpdate with useEffect
 
 	if (state) {
 		return (

@@ -2,11 +2,9 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 
-const App = () => {
+const App = ({ state }) => {
 
-  const jwt = localStorage.getItem('jwt');
-
-  if (jwt) {
+  if (state) {
     return(
       <Redirect to='/main' />
     )

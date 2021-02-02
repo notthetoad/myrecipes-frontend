@@ -66,8 +66,8 @@ const RegisterPage = () => {
 					mt='2'
 					type='submit'
 					>Register</Button>
-				{/* Get message from server res */}
 			</form>
+			<Center>{/* message that user was successfully registered */}</Center>
 		</Center>
 	)
 }

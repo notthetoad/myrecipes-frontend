@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {
+	Center,
 	Flex,
 	Box,
 	Input,
@@ -122,6 +123,7 @@ const RecipeField = () => {
 						Add recipe
 						</Button>
 					</Flex>
+					<Center>{/* message that recipe was successfully added */}</Center>
 				</Box>
 			</Flex>
 		</form>

@@ -17,14 +17,14 @@ const Routing = () => {
         <Router>
 					<Header state={loggedIn} setState={setLoggedIn} />
 						<Switch>
-							<Route exact path='/' component={App} />
+							<Route exact path='/'>
+								<App state={loggedIn} />
+							</Route>
 							<Route path='/main' component={MainPage} />
 							<Route path='/signup' component={RegisterPage} />
-							{/* <Route path='/login' component={LoginPage} /> */}
 							<Route path='/login'>
 								<LoginPage setState={setLoggedIn}/>
 							</Route>
-							{/* <Route path='/myrecipes' component={MyRecipes} /> */}
 							<Route path='/myrecipes'>
 								<MyRecipes state={loggedIn} />
 							</Route>
