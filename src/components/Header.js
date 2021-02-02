@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
 	Flex,
@@ -9,11 +9,16 @@ import {
 	useColorMode
 } from '@chakra-ui/react';
 
-const Header = ({ jwt, setJwt }) => {
+const Header = ({ state, setState }) => {
 
 	const { colorMode, toggleColorMode } = useColorMode();
+	
+	const jwt = localStorage.getItem('jwt');
+	// const [jwt, setJwt] = useState(localStorage.getItem('jwt'));
 
-	if (jwt) {
+	// do componentdidupdate with useEffect
+
+	if (state === 'success') {
 		return(
 			<Flex p='1' style={{backgroundColor: '#319795'}}>
 				<Box p='2'>
@@ -24,7 +29,7 @@ const Header = ({ jwt, setJwt }) => {
 				<Spacer />
 				<Box>
 					<Link to='/'>
-						<Button onClick={() => {localStorage.removeItem('jwt'); setJwt(null)}} colorScheme='teal' bg='teal' mr='4'>Logout</Button>
+						<Button onClick={() => {localStorage.removeItem('jwt'); setState('logged out')}} colorScheme='teal' bg='teal' mr='4'>Logout</Button>
 					</Link>
 					<Button colorScheme='teal' bg='teal' onClick={toggleColorMode}>{colorMode === 'light' ? "Dark" : "Light"} Mode</Button>
 				</Box>
