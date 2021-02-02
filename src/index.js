@@ -21,11 +21,11 @@ const Routing = () => {
 							<Route path='/main' component={MainPage} />
 							<Route path='/signup' component={RegisterPage} />
 							{/* <Route path='/login' component={LoginPage} /> */}
-							<Route to='/login'>
+							<Route path='/login'>
 								<LoginPage setState={setLoggedIn}/>
 							</Route>
 							{/* <Route path='/myrecipes' component={MyRecipes} /> */}
-							<Route to='/myrecipes'>
+							<Route path='/myrecipes'>
 								<MyRecipes state={loggedIn} />
 							</Route>
 						</Switch>
