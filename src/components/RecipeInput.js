@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState} from 'react';
 import axios from 'axios';
 import {
-	Center,
 	Flex,
+	Text,
+	Center,
 	Box,
 	Input,
 	Button,
@@ -18,6 +19,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const RecipeField = () => {
+
+	const [alertOpen, setAlertOpen] = useState(false);
 
 	const formik = useFormik({
 		initialValues: {
@@ -60,12 +63,22 @@ const RecipeField = () => {
 			}, { headers: {
 				'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
 			}})
-			.then(res => console.log(res))
+			// .then(res => console.log(res))
+			.then(res => {
+				if (res.status === 200) {
+					setAlertOpen(true);
+					setTimeout(() => {
+						setAlertOpen(false);
+					}, 2000)
+				}
+			})
 			.catch(err => console.log(err))
 		},
 	});
 
 	const style = {color: 'red'}
+
+	// make a variable that is a component with message on submit if server response === 200 change state to true to show message set timeout to change it false after 1.5s
 
 	return (
 		<form onSubmit={formik.handleSubmit}>
@@ -123,7 +136,7 @@ const RecipeField = () => {
 						Add recipe
 						</Button>
 					</Flex>
-					<Center>{/* message that recipe was successfully added */}</Center>
+					{alertOpen ? <Center>RecipeAdded</Center> : null}
 				</Box>
 			</Flex>
 		</form>

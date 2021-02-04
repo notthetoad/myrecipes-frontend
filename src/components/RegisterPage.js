@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import {
+	Text,
 	Center,
 	FormControl,
 	FormLabel,
@@ -13,7 +14,7 @@ import {
 
 const RegisterPage = () => {
 
-	const [registerMessage, setRegisterMessage] = useState('');
+	const [serverRes, setServerRes] = useState();
 
 	const formik = useFormik({
 		initialValues: {
@@ -27,15 +28,15 @@ const RegisterPage = () => {
 				login: login,
 				password: password
 			})
-			.then(res => setRegisterMessage(res.data.message))
+			.then(res => setServerRes(res.status));
 		},
 	});
+
 	return (
 		<Center mt='10%'>
 			<form onSubmit={formik.handleSubmit}>
 				<FormControl id='login' isRequired>
 					<FormLabel htmlFor='login'>Login</FormLabel>
-					{/* {formik.touched.login && formik.errors.login ? <Box style={{color: 'red'}}>{formik.errors.login}</Box> : null} */}
 					<Input 
 						type='login' 
 						id='login'
@@ -48,7 +49,6 @@ const RegisterPage = () => {
 				</FormControl>
 				<FormControl id='password' isRequired>
 					<FormLabel htmlFor='password'>Password</FormLabel>
-					{/* {formik.touched.password && formik.errors.password ? <Box style={{color: 'red'}}>{formik.errors.password}</Box> : null} */}
 					<Input 
 						type='password'
 						id='password'
@@ -64,10 +64,9 @@ const RegisterPage = () => {
 					variant='outline'
 					type='submit' 
 					mt='2'
-					type='submit'
 					>Register</Button>
+				<Center mt='4'>{serverRes === 200 ? <Text>Successfully registered</Text> : null}</Center>
 			</form>
-			<Center>{/* message that user was successfully registered */}</Center>
 		</Center>
 	)
 }

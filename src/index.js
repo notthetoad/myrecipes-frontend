@@ -20,7 +20,9 @@ const Routing = () => {
 							<Route exact path='/'>
 								<App state={loggedIn} />
 							</Route>
-							<Route path='/main' component={MainPage} />
+							<Route path='/main'>
+								<MainPage state={loggedIn} />
+							</Route>
 							<Route path='/signup' component={RegisterPage} />
 							<Route path='/login'>
 								<LoginPage setState={setLoggedIn}/>

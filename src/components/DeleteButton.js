@@ -23,7 +23,7 @@ const DeleteButton = (props) => {
 				icon={<MdClear />}
 				aria-label='Delete recipe'
 				size='sm'
-				ml='3px'
+				ml='auto'
 				onClick={deleteRecipe}
 			/>
 	)

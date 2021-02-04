@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Box,
 	StackDivider,
@@ -9,11 +9,11 @@ import {
 } from '@chakra-ui/react';
 import MainContainer from './MainContainer';
 import DeleteButton from './DeleteButton';
-import EditButton from './EditButton';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
 const Stack = (props) => (
+
 	<VStack w='70%'>
 		<StackDivider>
 			<Recipe {...props} />
@@ -28,7 +28,6 @@ const Recipe = (props) => {
 		<Flex p={5} shadow='md' borderWidth='1px' mb='3' direction='column'>
 			<Flex align='center'>
 				<Heading fontSize='1.5em'>{props.title}</Heading>
-				<EditButton />
 				<DeleteButton props={props} /> 
 			</Flex>
 			<Flex>
@@ -53,9 +52,12 @@ const MyRecipes = ({ state }) => {
 			}
 		})
 		.then(res => {
-			// console.log(res)
-			setRecipes(res.data.recipes)
+			if (setRecipes) {
+				setRecipes(res.data.recipes)
+			}
 		})
+
+		// fix memory leak with useRef or cancel function in useEffect
 
 	if (state) {
 		return (
