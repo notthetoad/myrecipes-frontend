@@ -21,7 +21,6 @@ const Stack = (props) => (
 	</VStack>
 )
 
-// Add button functionality
 const Recipe = (props) => {
 
 	return (
@@ -46,18 +45,24 @@ const MyRecipes = ({ state }) => {
 
 	const [recipes, setRecipes] = useState([]);
 
-		axios.get('http://localhost:5000/getrecipes', {
-			headers: {
-				'Authorization': `Bearer ${state}`
-			}
-		})
-		.then(res => {
-			if (setRecipes) {
-				setRecipes(res.data.recipes)
-			}
-		})
+		useEffect(() => {
+			const source = axios.CancelToken.source();
 
-		// fix memory leak with useRef or cancel function in useEffect
+			axios.get('http://localhost:5000/getrecipes', {
+				headers: {
+					'Authorization': `Bearer ${state}`
+				},
+				cancelToken: source.token
+			})
+			.then(res => {
+					setRecipes(res.data.recipes)
+				})
+				.catch(err => console.log('#Error ' + err))
+			return () => {
+				source.cancel()
+			}
+		}, [])
+
 
 	if (state) {
 		return (
