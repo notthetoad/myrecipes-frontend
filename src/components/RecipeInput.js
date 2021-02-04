@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
 	Flex,
@@ -20,6 +20,7 @@ import * as Yup from 'yup';
 const RecipeField = () => {
 
 	const [alertOpen, setAlertOpen] = useState(false);
+	const source = axios.CancelToken.source();
 
 	const formik = useFormik({
 		initialValues: {
@@ -61,7 +62,9 @@ const RecipeField = () => {
 				data 
 			}, { headers: {
 				'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-			}})
+			},
+				cancelToken: source.token
+			})
 			.then(res => {
 				if (res.status === 200) {
 					setAlertOpen(true);
@@ -73,6 +76,13 @@ const RecipeField = () => {
 			.catch(err => console.log(err))
 		},
 	});
+
+	useEffect(() => {
+		return () => {
+			source.cancel()
+		}
+	})
+
 
 	const style = {color: 'red'}
 

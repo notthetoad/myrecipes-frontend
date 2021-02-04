@@ -16,7 +16,7 @@ const Stack = (props) => (
 
 	<VStack w='70%'>
 		<StackDivider>
-			<Recipe {...props} />
+			<Recipe {...props}/>
 		</StackDivider>
 	</VStack>
 )
@@ -27,16 +27,16 @@ const Recipe = (props) => {
 		<Flex p={5} shadow='md' borderWidth='1px' mb='3' direction='column'>
 			<Flex align='center'>
 				<Heading fontSize='1.5em'>{props.title}</Heading>
-				<DeleteButton props={props} /> 
+				<DeleteButton props={props}/> 
 			</Flex>
 			<Flex>
 				<Text mt={4}>By: {props.author}</Text>
 			</Flex>
 			<Flex direction='column'>
-				<Box mt={4}>Ingredients: {props.ingredients.split('\n').map(item => <Box ml='6%'>{item}<br /></Box>)}</Box>
+				<Box mt={4}>Ingredients: {props.ingredients.split('\n').map(item => <Box key={props.recipe_id+item} ml='6%'>{item}<br /></Box>)}</Box>
 			</Flex>
 			<Text mt={4}>Portion Size: {props.portionSize}</Text>
-			<Box mt={4}>Steps: {props.steps.split('\n').map(item => <Box ml='6%'>{item}<br /></Box>)}</Box>
+			<Box mt={4}>Steps: {props.steps.split('\n').map(item => <Box key={props.recipe_id+item} ml='6%'>{item}<br /></Box>)}</Box>
 		</Flex>
 	)
 }
