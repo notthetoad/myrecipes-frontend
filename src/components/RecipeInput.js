@@ -2,7 +2,6 @@ import React, { useState} from 'react';
 import axios from 'axios';
 import {
 	Flex,
-	Text,
 	Center,
 	Box,
 	Input,
@@ -63,7 +62,6 @@ const RecipeField = () => {
 			}, { headers: {
 				'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
 			}})
-			// .then(res => console.log(res))
 			.then(res => {
 				if (res.status === 200) {
 					setAlertOpen(true);
@@ -77,8 +75,6 @@ const RecipeField = () => {
 	});
 
 	const style = {color: 'red'}
-
-	// make a variable that is a component with message on submit if server response === 200 change state to true to show message set timeout to change it false after 1.5s
 
 	return (
 		<form onSubmit={formik.handleSubmit}>

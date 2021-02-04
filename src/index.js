@@ -11,7 +11,7 @@ import MainPage from './components/MainPage';
 
 const Routing = () => {
 
-	const [loggedIn, setLoggedIn] = useState();
+	const [loggedIn, setLoggedIn] = useState(localStorage.getItem('jwt'));
 
     return(
         <Router>
