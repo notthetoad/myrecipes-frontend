@@ -61,7 +61,7 @@ const MyRecipes = ({ state }) => {
 			return () => {
 				source.cancel()
 			}
-		}, [recipes])
+		}, [recipes, state])
 
 
 	if (state) {

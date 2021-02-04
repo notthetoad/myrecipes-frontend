@@ -81,7 +81,7 @@ const RecipeField = () => {
 		return () => {
 			source.cancel()
 		}
-	})
+	}, [alertOpen])
 
 
 	const style = {color: 'red'}
