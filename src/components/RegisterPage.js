@@ -76,7 +76,7 @@ const RegisterPage = () => {
 					type='submit' 
 					mt='2'
 					>Register</Button>
-				<Center mt='4'>{serverResCode === 200 ? <Text>Successfully registered</Text> : null}</Center>
+				<Center mt='4'>{serverResCode === 200 ? <Text style={{color: 'teal'}}>Successfully registered</Text> : null}</Center>
 				<Center mt='4'>{serverResCode !== 200 && alertOpen ? <Text style={{color: "tomato"}}>{errorMessage}</Text> : null}</Center>
 			</form>
 		</Center>
