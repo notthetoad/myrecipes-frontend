@@ -57,7 +57,7 @@ const MyRecipes = ({ state }) => {
 			.then(res => {
 					setRecipes(res.data.recipes)
 				})
-			.catch(err => console.log('#Error ' + err))
+			.catch(err => console.log(err.message))
 			return () => {
 				source.cancel()
 			}

@@ -11,10 +11,13 @@ import {
 	Button,
 	Input,
 } from '@chakra-ui/react';
+import ServerErrorMessageAlert from './ServerErrorMessageAlert';
 
 const RegisterPage = () => {
 
-	const [serverRes, setServerRes] = useState();
+	const [serverResCode, setServerResCode] = useState();
+	const [alertOpen, setAlertOpen] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const formik = useFormik({
 		initialValues: {
@@ -28,7 +31,15 @@ const RegisterPage = () => {
 				login: login,
 				password: password
 			})
-			.then(res => setServerRes(res.status));
+			.then(res => {
+				console.log(res)
+				setServerResCode(res.status)
+			})
+			.catch(err => {
+				console.log(err.response)
+				setErrorMessage(err.response.data.message)
+				ServerErrorMessageAlert(serverResCode, setAlertOpen)
+			})
 		},
 	});
 
@@ -65,7 +76,8 @@ const RegisterPage = () => {
 					type='submit' 
 					mt='2'
 					>Register</Button>
-				<Center mt='4'>{serverRes === 200 ? <Text>Successfully registered</Text> : null}</Center>
+				<Center mt='4'>{serverResCode === 200 ? <Text>Successfully registered</Text> : null}</Center>
+				<Center mt='4'>{serverResCode !== 200 && alertOpen ? <Text style={{color: "tomato"}}>{errorMessage}</Text> : null}</Center>
 			</form>
 		</Center>
 	)

@@ -16,10 +16,15 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import RecipeAddedAlert from './RecipeAddedAlert';
+import ServerErrorMessageAlert from './ServerErrorMessageAlert';
 
 const RecipeField = () => {
 
+	const [serverCode, setServerCode] = useState();
 	const [alertOpen, setAlertOpen] = useState(false);
+	const [serverMessage, setServerMessage] = useState('');
+
 	const source = axios.CancelToken.source();
 
 	const formik = useFormik({
@@ -66,14 +71,15 @@ const RecipeField = () => {
 				cancelToken: source.token
 			})
 			.then(res => {
-				if (res.status === 200) {
-					setAlertOpen(true);
-					setTimeout(() => {
-						setAlertOpen(false);
-					}, 2000)
-				}
+				console.log(res)
+				setServerCode(res.status)
+				setServerMessage(res.data.message)
+				RecipeAddedAlert(serverCode, setAlertOpen)
 			})
-			.catch(err => console.log(err))
+			.catch(err => {
+				setServerMessage(err.response.data.message)
+				ServerErrorMessageAlert(serverCode, setAlertOpen)
+			})
 		},
 	});
 
@@ -84,7 +90,7 @@ const RecipeField = () => {
 	}, [alertOpen, source])
 
 
-	const style = {color: 'red'}
+	const style = {color: 'tomato'}
 
 	return (
 		<form onSubmit={formik.handleSubmit}>
@@ -142,7 +148,8 @@ const RecipeField = () => {
 						Add recipe
 						</Button>
 					</Flex>
-					{alertOpen ? <Center>RecipeAdded</Center> : null}
+					{serverCode === 200 && alertOpen ? <Center>{serverMessage}</Center> : null}
+					{serverCode !== 200 && alertOpen ? <Center style={{color: 'tomato'}}>{serverMessage}</Center> : null}
 				</Box>
 			</Flex>
 		</form>

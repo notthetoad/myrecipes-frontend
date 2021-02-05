@@ -1,20 +1,10 @@
-import React from 'react';
-import {
-	Center,
-	Text
-} from '@chakra-ui/react';
-
-const RecipeAddedAlert = ({ serverRes }) => {
-
-	const alert = () => {
-		return <Text>Recipe Added</Text>
+const RecipeAddedAlert = (statusCode, setState) => {
+	if (statusCode === 200) {
+		setState(true);
+		setTimeout(() => {
+			setState(false)
+		}, 1750);
 	}
-
-	return (
-		<Center>
-			{serverRes === 200 ? setTimeout(alert, 1500) : null}
-		</Center>
-	)
 }
 
 export default RecipeAddedAlert;
