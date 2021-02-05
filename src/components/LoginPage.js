@@ -30,13 +30,11 @@ const LoginPage = ({ setState }) => {
 				password: password
 			})
 			.then(res => {
-				console.log(res)
 				setServerCode(res.status);
 				localStorage.setItem('jwt', res.data.jwt)
 				setState(res.data.jwt)
 			}) 
 			.catch(err => {
-				console.log(err.response)
 				setErrorMessage(err.response.data.message)
 				ServerErrorMessageAlert(serverCode, setAlertOpen)
 			})

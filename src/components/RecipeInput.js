@@ -71,7 +71,6 @@ const RecipeField = () => {
 				cancelToken: source.token
 			})
 			.then(res => {
-				console.log(res)
 				setServerCode(res.status)
 				setServerMessage(res.data.message)
 				RecipeAddedAlert(serverCode, setAlertOpen)

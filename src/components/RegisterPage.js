@@ -32,11 +32,9 @@ const RegisterPage = () => {
 				password: password
 			})
 			.then(res => {
-				console.log(res)
 				setServerResCode(res.status)
 			})
 			.catch(err => {
-				console.log(err.response)
 				setErrorMessage(err.response.data.message)
 				ServerErrorMessageAlert(serverResCode, setAlertOpen)
 			})
