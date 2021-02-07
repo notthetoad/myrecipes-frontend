@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import {
+	Text,
 	Center,
 	FormControl,
 	FormLabel,
@@ -10,10 +11,13 @@ import {
 	Button,
 	Input,
 } from '@chakra-ui/react';
+import ServerErrorMessageAlert from './ServerErrorMessageAlert';
 
 const RegisterPage = () => {
 
-	const [registerMessage, setRegisterMessage] = useState('');
+	const [serverResCode, setServerResCode] = useState();
+	const [alertOpen, setAlertOpen] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const formik = useFormik({
 		initialValues: {
@@ -27,15 +31,21 @@ const RegisterPage = () => {
 				login: login,
 				password: password
 			})
-			.then(res => setRegisterMessage(res.data.message))
+			.then(res => {
+				setServerResCode(res.status)
+			})
+			.catch(err => {
+				setErrorMessage(err.response.data.message)
+				ServerErrorMessageAlert(serverResCode, setAlertOpen)
+			})
 		},
 	});
+
 	return (
 		<Center mt='10%'>
 			<form onSubmit={formik.handleSubmit}>
 				<FormControl id='login' isRequired>
 					<FormLabel htmlFor='login'>Login</FormLabel>
-					{/* {formik.touched.login && formik.errors.login ? <Box style={{color: 'red'}}>{formik.errors.login}</Box> : null} */}
 					<Input 
 						type='login' 
 						id='login'
@@ -48,7 +58,6 @@ const RegisterPage = () => {
 				</FormControl>
 				<FormControl id='password' isRequired>
 					<FormLabel htmlFor='password'>Password</FormLabel>
-					{/* {formik.touched.password && formik.errors.password ? <Box style={{color: 'red'}}>{formik.errors.password}</Box> : null} */}
 					<Input 
 						type='password'
 						id='password'
@@ -64,9 +73,9 @@ const RegisterPage = () => {
 					variant='outline'
 					type='submit' 
 					mt='2'
-					type='submit'
 					>Register</Button>
-				{/* Get message from server res */}
+				<Center mt='4'>{serverResCode === 200 ? <Text style={{color: 'teal'}}>Successfully registered</Text> : null}</Center>
+				<Center mt='4'>{serverResCode !== 200 && alertOpen ? <Text style={{color: "tomato"}}>{errorMessage}</Text> : null}</Center>
 			</form>
 		</Center>
 	)

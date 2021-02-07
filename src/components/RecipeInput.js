@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
 	Flex,
+	Center,
 	Box,
 	Input,
 	Button,
@@ -15,8 +16,16 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import RecipeAddedAlert from './RecipeAddedAlert';
+import ServerErrorMessageAlert from './ServerErrorMessageAlert';
 
 const RecipeField = () => {
+
+	const [serverCode, setServerCode] = useState();
+	const [alertOpen, setAlertOpen] = useState(false);
+	const [serverMessage, setServerMessage] = useState('');
+
+	const source = axios.CancelToken.source();
 
 	const formik = useFormik({
 		initialValues: {
@@ -58,13 +67,29 @@ const RecipeField = () => {
 				data 
 			}, { headers: {
 				'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-			}})
-			.then(res => console.log(res))
-			.catch(err => console.log(err))
+			},
+				cancelToken: source.token
+			})
+			.then(res => {
+				setServerCode(res.status)
+				setServerMessage(res.data.message)
+				RecipeAddedAlert(serverCode, setAlertOpen)
+			})
+			.catch(err => {
+				setServerMessage(err.response.data.message)
+				ServerErrorMessageAlert(serverCode, setAlertOpen)
+			})
 		},
 	});
 
-	const style = {color: 'red'}
+	useEffect(() => {
+		return () => {
+			source.cancel()
+		}
+	}, [alertOpen, source])
+
+
+	const style = {color: 'tomato'}
 
 	return (
 		<form onSubmit={formik.handleSubmit}>
@@ -117,10 +142,13 @@ const RecipeField = () => {
 							marginLeft='auto' 
 							mt='3'
 							onClick={formik.handleSubmit}
+							type='submit'
 						>
 						Add recipe
 						</Button>
 					</Flex>
+					{serverCode === 200 && alertOpen ? <Center>{serverMessage}</Center> : null}
+					{serverCode !== 200 && alertOpen ? <Center style={{color: 'tomato'}}>{serverMessage}</Center> : null}
 				</Box>
 			</Flex>
 		</form>

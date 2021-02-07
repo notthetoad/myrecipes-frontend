@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import {
 	Grid,
 	GridItem,
@@ -6,9 +7,10 @@ import {
 import SideContainer from './SideContainer';
 import RecipeInput from './RecipeInput';
 
-const MainPage = () => {
+const MainPage = ({ state }) => {
 
-	return (
+	if (state) {
+		return (
 			<Grid templateColumns='repeat(10, 1fr)' gap={3} h='1000vh' mt='5%'>
 				<SideContainer />
 				<GridItem colStart={4} colEnd={11}>
@@ -16,6 +18,9 @@ const MainPage = () => {
 				</GridItem>
 			</Grid>
 	)
+	} else {
+		return <Redirect to='/' />
+	}
 }
 
 export default MainPage;
